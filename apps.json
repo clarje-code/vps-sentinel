@@ -1,0 +1,36 @@
+{
+  "settings": {
+    "cron_interval": "*/15 * * * *",
+    "healthcheck_timeout_ms": 6000,
+    "max_concurrent_tests": 2,
+    "notify_on_recovery": true
+  },
+  "apps": [
+    {
+      "id": "sokoci-delivery",
+      "name": "SOKOCI Delivery",
+      "enabled": true,
+      "base_url": "https://delivery.sokoci.com",
+      "coolify": {
+        "app_uuid": "pjfnqfkonvxeccglhcdwambp"
+      },
+      "healthcheck": {
+        "endpoint": "/up",
+        "expected_status": 200,
+        "max_latency_ms": 600
+      },
+      "critical_routes": [
+        { "path": "/login", "expected_status": 200, "match_string": "data-page" },
+        { "path": "/guide", "expected_status": 200 }
+      ],
+      "tests": {
+        "playwright_spec": "tests/sokoci-delivery/e2e.spec.ts",
+        "k6_script": "tests/sokoci-delivery/k6-load.js"
+      },
+      "env": {
+        "TEST_USER_EMAIL": "test@sokoci.com",
+        "TEST_USER_PASSWORD": "SecretPassword123!"
+      }
+    }
+  ]
+}

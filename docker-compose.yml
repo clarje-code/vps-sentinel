@@ -1,0 +1,23 @@
+services:
+  vps-sentinel:
+    build: .
+    container_name: vps-sentinel
+    restart: unless-stopped
+    ports:
+      - "3080:3080"
+    environment:
+      - PORT=3080
+      - API_KEY=${API_KEY:-sokoci_sentinel_secret_key_2026}
+      - CRON_SCHEDULE=${CRON_SCHEDULE:-*/15 * * * *}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+    volumes:
+      - ./apps.json:/app/apps.json
+      - ./tests:/app/tests
+      - ./reports:/app/reports
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

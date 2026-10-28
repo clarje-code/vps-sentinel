@@ -1,0 +1,21 @@
+{
+  "name": "vps-sentinel",
+  "version": "1.0.0",
+  "description": "Service centralise et autonome de tests et surveillance multi-applications sur VPS Coolify",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "playwright test",
+    "check": "node -e 'import(\"./src/cron.js\").then(m => m.runAllHealthChecks())'"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "node-cron": "^3.0.3",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.0.0"
+  }
+}
